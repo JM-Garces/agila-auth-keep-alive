@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Ping the login form
         run: |
-          RESPONSE=$(curl -s -o body.txt -w "%{http_code}" -X POST https://auth.agilabuscorp.me/authentication/login \
+          RESPONSE=$(curl -s -o body.txt -w "%{http_code}" -X POST https://auth.agilabuscorp.me/api/auth/login \
             -H "Content-Type: application/x-www-form-urlencoded" \
             --data-urlencode "employeeId=${{ secrets.AUTH_EMPLOYEE_ID }}" \
             --data-urlencode "password=${{ secrets.AUTH_PASSWORD }}")
