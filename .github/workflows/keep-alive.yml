@@ -2,16 +2,26 @@ name: Keep Auth Service Alive
 
 on:
   schedule:
-    - cron: "*/15 * * * *"  # Every 15 minutes
-  workflow_dispatch:        # Allow manual triggering from GitHub UI
+    - cron: "*/15 * * * *"  # Run every 15 minutes
+  workflow_dispatch:        # Manual run option
 
 jobs:
   keep_alive:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Send login request to auth microservice
+      - name: Ping the login form
         run: |
-          curl -X POST https://your-auth-service-url.com/api/login \
-            -H "Content-Type: application/json" \
-            -d '{"username": "your_username", "password": "your_password"}'
+          RESPONSE=$(curl -s -o body.txt -w "%{http_code}" -X POST https://auth.agilabuscorp.me/authentication/login \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data-urlencode "employeeId=${{ secrets.AUTH_EMPLOYEE_ID }}" \
+            --data-urlencode "password=${{ secrets.AUTH_PASSWORD }}")
+
+          echo "Status Code: $RESPONSE"
+          echo "Response body:"
+          cat body.txt
+
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "Login failed or service down"
+            exit 1
+          fi
