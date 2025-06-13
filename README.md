@@ -1,0 +1,1 @@
+[![Keep Auth Service Alive](https://github.com/JM-Garces/agila-auth-keep-alive/actions/workflows/keep-alive.yml/badge.svg?event=workflow_dispatch)](https://github.com/JM-Garces/agila-auth-keep-alive/actions/workflows/keep-alive.yml)
