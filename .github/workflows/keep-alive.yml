@@ -2,26 +2,32 @@ name: Keep Auth Service Alive
 
 on:
   schedule:
-    - cron: "*/6 * * * *"  # Run every 15 minutes
-  workflow_dispatch:        # Manual run option
+    - cron: "*/6 * * * *"  # Every 6 minutes (as close as GitHub allows)
+  workflow_dispatch:        # Manual trigger option
 
 jobs:
   keep_alive:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ping the login form
+      - name: Send login request
         run: |
+          echo "Sending POST request to keep auth service awake..."
+
           RESPONSE=$(curl -s -o body.txt -w "%{http_code}" -X POST https://auth.agilabuscorp.me/api/auth/login \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            --data-urlencode "employeeId=${{ secrets.AUTH_EMPLOYEE_ID }}" \
-            --data-urlencode "password=${{ secrets.AUTH_PASSWORD }}")
+            -H "Content-Type: application/json" \
+            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            -H "Origin: https://auth.agilabuscorp.me" \
+            -H "Referer: https://auth.agilabuscorp.me/authentication/login" \
+            -d '{"employeeId":"EMP4","password":"P@ssw0rd"}')
 
           echo "Status Code: $RESPONSE"
-          echo "Response body:"
+          echo "Response Body:"
           cat body.txt
 
           if [ "$RESPONSE" -ne 200 ]; then
-            echo "Login failed or service down"
+            echo "❌ Login failed or service error"
             exit 1
+          else
+            echo "✅ Login successful"
           fi
