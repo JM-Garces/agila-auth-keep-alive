@@ -1,0 +1,17 @@
+name: Keep Auth Service Alive
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"  # Every 15 minutes
+  workflow_dispatch:        # Allow manual triggering from GitHub UI
+
+jobs:
+  keep_alive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send login request to auth microservice
+        run: |
+          curl -X POST https://your-auth-service-url.com/api/login \
+            -H "Content-Type: application/json" \
+            -d '{"username": "your_username", "password": "your_password"}'
