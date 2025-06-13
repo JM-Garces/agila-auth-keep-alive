@@ -8,7 +8,7 @@ A simple GitHub Actions workflow that automatically sends a login request every 
 
 ## 🔧 How It Works
 
-- Triggers every 6 minutes using GitHub Actions.
+- Triggers every 6 minutes using GitHub Actions. (nagdagdag ako external cron job, every 5 minutes na sya)
 - Sends a POST request to `/api/auth/login` endpoint.
 - Prevents the server from going idle.
 
