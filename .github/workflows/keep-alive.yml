@@ -19,7 +19,7 @@ jobs:
             -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
             -H "Origin: https://auth.agilabuscorp.me" \
             -H "Referer: https://auth.agilabuscorp.me/authentication/login" \
-            -d '{"employeeId":"EMP4","password":"P@ssw0rd"}')
+            -d "{\"employeeId\":\"${{ secrets.AUTH_USERNAME }}\",\"password\":\"${{ secrets.AUTH_PASSWORD }}\"}"
 
           echo "Status Code: $RESPONSE"
           echo "Response Body:"
