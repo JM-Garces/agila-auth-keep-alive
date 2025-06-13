@@ -2,7 +2,7 @@ name: Keep Auth Service Alive
 
 on:
   schedule:
-    - cron: "*/15 * * * *"  # Run every 15 minutes
+    - cron: "*/6 * * * *"  # Run every 15 minutes
   workflow_dispatch:        # Manual run option
 
 jobs:
